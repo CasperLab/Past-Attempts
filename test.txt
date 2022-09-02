@@ -1,0 +1,104 @@
+punctuation_chars = ["'", '"', ",", ".", "!", ":", ";", '#', '@']
+
+def strip_punctuation(s):
+    for p in punctuation_chars:
+        s = s.replace(p, "")
+    return s
+
+def get_pos(str):
+    pos = 0
+    str_lst = strip_punctuation(str).split()
+    for wrd in str_lst:
+        if wrd.lower() in positive_words:
+            pos += 1
+    return pos
+
+def get_neg(str):
+    neg = 0
+    str_lst = strip_punctuation(str).split()
+    for wrd in str_lst:
+        if wrd.lower() in negative_words:
+            neg += 1
+    return neg
+
+
+# lists of words to use
+positive_words = []
+with open("positive_words.txt") as pos_f:
+    for lin in pos_f:
+        if lin[0] != ';' and lin[0] != '\n':
+            positive_words.append(lin.strip())
+
+
+negative_words = []
+with open("negative_words.txt") as pos_f:
+    for lin in pos_f:
+        if lin[0] != ';' and lin[0] != '\n':
+            negative_words.append(lin.strip())
+            
+
+punctuation_chars = ["'", '"', ",", ".", "!", ":", ";", '#', '@']
+
+def strip_punctuation(s):
+    for p in punctuation_chars:
+        s = s.replace(p, "")
+    return s
+
+def get_pos(str):
+    pos = 0
+    str_lst = strip_punctuation(str).split()
+    for wrd in str_lst:
+        if wrd.lower() in positive_words:
+            pos += 1
+    return pos
+
+def get_neg(str):
+    neg = 0
+    str_lst = strip_punctuation(str).split()
+    for wrd in str_lst:
+        if wrd.lower() in negative_words:
+            neg += 1
+    return neg
+
+
+# lists of words to use
+positive_words = []
+with open("positive_words.txt") as pos_f:
+    for lin in pos_f:
+        if lin[0] != ';' and lin[0] != '\n':
+            positive_words.append(lin.strip())
+
+
+negative_words = []
+with open("negative_words.txt") as pos_f:
+    for lin in pos_f:
+        if lin[0] != ';' and lin[0] != '\n':
+            negative_words.append(lin.strip())
+            
+outfile = open("resulting_data.csv", "w")
+outfile.write('Number of Retweets, Number of Replies, Positive Score, Negative Score, Net Score')
+outfile.write('\n')
+
+
+t_file = open("project_twitter_data.csv", "r")
+rows = t_file.readlines()[1:]
+for line in rows:
+    words = line.split()
+    
+    numbers = words[-1]
+    twrt = numbers.split(",")
+    
+    retweet = twrt[1]
+    replies = twrt[2]
+    pos_score = get_pos(line)
+    neg_score = get_neg(line)
+    
+    net_score = pos_score - neg_score 
+    print("net score: ", net_score)
+        
+    row_string = '{},{},{},{},{}'.format(retweet, replies, pos_score, neg_score, net_score)
+    outfile.write(row_string)
+    outfile.write('\n')
+
+
+
